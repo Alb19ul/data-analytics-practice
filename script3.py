@@ -38,28 +38,20 @@ users = [
     {"id": 8, "name": "Kirill", "age": 29, "email": ""}
 ]
 
-wrongData = []
+wrong_data = []
 for user in users:
-     if user.get('name') == "" :
-         Aaa = {'id': user.get('id'),
-                'name': user.get('name')}
-         wrongData.append(Aaa)
-     if 120 < user.get('age') or user.get('age') < 0:
-        if [user.get('id') for item in wrongData if item.get('id') == user.get('id')] == []:
-            Aoo = {'id': user.get('id'), 'age': user.get('age')}
-            wrongData.append(Aoo)
-        else:
-            for item in wrongData:
-              if item['id'] == user.get('id'):
-                 item['age'] = user.get('age')
-     if "@" not in user.get('email'):
-         if [user.get('id') for item in wrongData if item.get('id') == user.get('id')] == []:
-             AAo = {'id': user.get('id'), 'email': user.get('email')}
-             wrongData.append(AAo)
-         else:
-             for item in wrongData:
-                 if item['id'] == user.get('id'):
-                     item['email'] = user.get('email')
+    incorrect_String = {}
+    if user.get('name') == "" :
+        incorrect_String['id'] = user.get('id')
+        incorrect_String['name'] = user.get('name')
+    if 120 < user.get('age') or user.get('age') < 0:
+        incorrect_String.update({'id':user.get('id'),'age':user.get('age')})
+    if "@" not in user.get('email'):
+        incorrect_String.update({'id': user.get('id'), 'email': user.get('email')})
+
+    if incorrect_String!={}:
+        wrong_data.append(incorrect_String)
+
 
 
 
@@ -67,11 +59,27 @@ for user in users:
 
 
 #выводим записи с ошибками
-for strW in wrongData:
+for strW in wrong_data:
      print(strW, end="\n")
 #всего записей
 print(f'всего записей = {len(users)}')
 #сколько записей с ошибками
-print(f'всего записей с ошибками = {wrongData.__len__()}')
+print(f'всего записей с ошибками = {len(wrong_data)}')
 #корректных записей
-print(f'всего записей = {users.__len__() - wrongData.__len__()}')
+print(f'всего записей без ошибок = {len(users) - len(wrong_data)}')
+
+
+n,a,m = 0,0,0
+for data in wrong_data:
+    if 'name' in data:
+        n += 1
+    if 'age' in data:
+        a += 1
+    if 'email' in data:
+        m +=1
+# Пустое имя: 2
+print(f'записей с пустым именем  = {n}')
+# Неверный возраст: 3
+print(f'записей с неверным возрастом  = {a}')
+# Неверный email: 2
+print(f'записей с некорректным email  = {m}')
