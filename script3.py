@@ -27,6 +27,7 @@
 # И ещё один вопрос для размышления: что произойдёт с твоей программой, если у пользователя вообще отсутствует ключ age или вместо числа там окажется строка "25"?
 
 #добавление типа ошибки missing_value, invalid_type, out_of_range, missing_field.
+#ключ id считаем обязательным
 
 users = [
     {"id": 1, "name": "Anna", "age": 25, "email": "anna@mail.com"},
@@ -47,16 +48,19 @@ wrong_data = []
 for user in users:
     incorrect_String = {}
     if 'name' not in user:
-        print('имени нет в словаре')
+        incorrect_String['id'] = user.get('id')
+        incorrect_String['type_error'] = "missing_field"
     elif user.get('name') == "" :
         incorrect_String['id'] = user.get('id')
         incorrect_String['name'] = user.get('name')
     if 'age' not in user:
-        print('возраста нет в словаре')
+        incorrect_String['id'] = user.get('id')
+        incorrect_String['type_error'] = "missing_field"
     elif not isinstance (user.get('age'),int) or (120 < user.get('age') or user.get('age')) < 0:
         incorrect_String.update({'id':user.get('id'),'age':user.get('age')})
     if 'email' not in user:
-        print('почтового адреса нет в словаре')
+        incorrect_String['id'] = user.get('id')
+        incorrect_String['type_error'] = "missing_field"
     elif "@" not in user.get('email'):
         incorrect_String.update({'id': user.get('id'), 'email': user.get('email')})
 
@@ -79,7 +83,7 @@ print(f'всего записей с ошибками = {len(wrong_data)}')
 print(f'всего записей без ошибок = {len(users) - len(wrong_data)}')
 
 
-n,a,m = 0,0,0
+n,a,m,k = 0,0,0,0
 for data in wrong_data:
     if 'name' in data:
         n += 1
@@ -87,9 +91,14 @@ for data in wrong_data:
         a += 1
     if 'email' in data:
         m +=1
+    if 'type_error' == "missing_field":
+        k +=1
+
 # Пустое имя: 2
 print(f'записей с пустым именем  = {n}')
 # Неверный возраст: 3
 print(f'записей с неверным возрастом  = {a}')
 # Неверный email: 2
 print(f'записей с некорректным email  = {m}')
+# отсутствуют поля:
+print(f'записей с отсутствующими полями  = {m}')
